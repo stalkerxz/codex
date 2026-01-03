@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { lessons } from "../data/lessons";
 import { Lesson, UserProgress } from "../data/types";
 import { getProgress, saveProgress } from "../db/indexedDb";
-import StatusBadge from "../components/StatusBadge";
+import StatusBadge, { StatusKey } from "../components/StatusBadge";
 import PlaceholderImage from "../components/PlaceholderImage";
 
 const MAX_FILE_SIZE = 12 * 1024 * 1024;
@@ -43,9 +43,9 @@ const LessonDetailPage = () => {
   if (!lesson) {
     return (
       <section className="page">
-        <h1>Lesson not found</h1>
+        <h1>Урок не найден</h1>
         <Link to="/" className="button-link">
-          Back to learning path
+          Вернуться к учебному пути
         </Link>
       </section>
     );
@@ -54,17 +54,17 @@ const LessonDetailPage = () => {
   if (!progress) {
     return (
       <section className="page">
-        <p>Loading lesson progress…</p>
+        <p>Загружаем прогресс урока…</p>
       </section>
     );
   }
 
   const hasChecklistProgress = progress.checklistCheckedStates.some(Boolean);
-  const status = progress.mastered
-    ? "Mastered"
+  const status: StatusKey = progress.mastered
+    ? "mastered"
     : progress.uploadedImage || hasChecklistProgress
-      ? "In Progress"
-      : "Not Started";
+      ? "in-progress"
+      : "not-started";
 
   const updateProgress = async (next: UserProgress) => {
     setProgress(next);
@@ -76,12 +76,12 @@ const LessonDetailPage = () => {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      setError("Please upload an image file (JPG, PNG, or WebP).");
+      setError("Пожалуйста, загрузите изображение (JPG, PNG или WebP).");
       return;
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      setError("File is too large. Please keep uploads under 12MB.");
+      setError("Файл слишком большой. Пожалуйста, загрузите изображение до 12 МБ.");
       return;
     }
 
@@ -127,23 +127,23 @@ const LessonDetailPage = () => {
       </div>
       <div className="lesson-content">
         <div className="lesson-section">
-          <h2>The Core Concept</h2>
+          <h2>Основная идея</h2>
           <p>{lesson.concept}</p>
         </div>
         <div className="lesson-section">
-          <h2>Why It Matters</h2>
+          <h2>Почему это важно</h2>
           <p>{lesson.whyItMatters}</p>
         </div>
         <div className="lesson-section">
-          <h2>Practical Mission</h2>
+          <h2>Практическая миссия</h2>
           <p>{lesson.mission}</p>
         </div>
         <div className="lesson-section">
-          <h2>Example</h2>
+          <h2>Пример</h2>
           <div className="example-card">
-            <PlaceholderImage label="Example Placeholder" />
+            <PlaceholderImage label="Пример-замена" />
             <div>
-              <p className="example-label">AI Image Prompt</p>
+              <p className="example-label">Промпт для ИИ</p>
               <p>{lesson.examplePrompt}</p>
             </div>
           </div>
@@ -151,20 +151,20 @@ const LessonDetailPage = () => {
       </div>
 
       <div className="lesson-section mission-section">
-        <h2>Mission Verification</h2>
-        <p>Upload one image from your mission and verify each checklist item to earn mastery.</p>
+        <h2>Проверка миссии</h2>
+        <p>Загрузите одно изображение из миссии и отметьте пункты чек-листа, чтобы получить статус «Освоено».</p>
         <div className="upload-panel">
           <label className="upload-button">
-            Upload Mission Image
+            Загрузить изображение
             <input type="file" accept="image/*" onChange={handleFileChange} />
           </label>
           {error && <p className="error-text">{error}</p>}
           {previewUrl ? (
             <div className="upload-preview">
-              <img src={previewUrl} alt={`Uploaded result for ${lesson.title}`} />
+              <img src={previewUrl} alt={`Результат миссии: ${lesson.title}`} />
             </div>
           ) : (
-            <p className="muted-text">No image uploaded yet.</p>
+            <p className="muted-text">Изображение ещё не загружено.</p>
           )}
         </div>
         <div className="checklist">
@@ -181,10 +181,10 @@ const LessonDetailPage = () => {
         </div>
         <div className="lesson-status">
           <p>
-            Status: <strong>{status}</strong>
+            Статус: <strong>{status === "mastered" ? "Освоено" : status === "in-progress" ? "В процессе" : "Не начато"}</strong>
           </p>
-          {status === "Mastered" && progress.completedAt && (
-            <p className="muted-text">Completed on {new Date(progress.completedAt).toLocaleDateString()}.</p>
+          {status === "mastered" && progress.completedAt && (
+            <p className="muted-text">Завершено {new Date(progress.completedAt).toLocaleDateString()}.</p>
           )}
         </div>
       </div>

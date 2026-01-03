@@ -3,6 +3,7 @@ import { lessons } from "../data/lessons";
 import { UserProgress } from "../data/types";
 import { listAllProgress } from "../db/indexedDb";
 import LessonCard from "../components/LessonCard";
+import { StatusKey } from "../components/StatusBadge";
 
 const HomePage = () => {
   const [progressList, setProgressList] = useState<UserProgress[]>([]);
@@ -19,20 +20,19 @@ const HomePage = () => {
     return new Map(progressList.map((item) => [item.lessonId, item]));
   }, [progressList]);
 
-  const getStatus = (lessonId: string) => {
+  const getStatus = (lessonId: string): StatusKey => {
     const progress = progressMap.get(lessonId);
-    if (!progress) return "Not Started" as const;
-    if (progress.mastered) return "Mastered" as const;
-    return "In Progress" as const;
+    if (!progress) return "not-started";
+    if (progress.mastered) return "mastered";
+    return "in-progress";
   };
 
   return (
     <section className="page">
       <div className="page-header">
-        <h1>Learning Path</h1>
+        <h1>Учебный путь</h1>
         <p>
-          Five foundational lessons. Each mission is designed to train your eye offline and keep your progress stored on
-          your device.
+          Пять базовых уроков. Каждая миссия тренирует взгляд и хранит ваш прогресс прямо на устройстве.
         </p>
       </div>
       <div className="lesson-grid">

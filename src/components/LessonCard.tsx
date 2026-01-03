@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { Lesson } from "../data/types";
-import StatusBadge from "./StatusBadge";
+import StatusBadge, { StatusKey } from "./StatusBadge";
 
 type LessonCardProps = {
   lesson: Lesson;
-  status: "Not Started" | "In Progress" | "Mastered";
+  status: StatusKey;
 };
 
 const LessonCard = ({ lesson, status }: LessonCardProps) => {
@@ -17,7 +17,7 @@ const LessonCard = ({ lesson, status }: LessonCardProps) => {
       <div className="lesson-card-footer">
         <StatusBadge status={status} />
         <Link to={`/lesson/${lesson.id}`} className="button-link">
-          Open Lesson
+          Открыть урок
         </Link>
       </div>
     </div>

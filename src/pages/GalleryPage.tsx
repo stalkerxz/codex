@@ -45,11 +45,11 @@ const GalleryPage = () => {
   return (
     <section className="page">
       <div className="page-header">
-        <h1>Gallery of Achievements</h1>
-        <p>Completed missions appear here with your uploaded images and the date you mastered them.</p>
+        <h1>Галерея достижений</h1>
+        <p>Завершённые миссии появляются здесь вместе с датой и вашими снимками.</p>
       </div>
       {achievementsWithMeta.length === 0 ? (
-        <p className="muted-text">Complete a mission to see it appear in the gallery.</p>
+        <p className="muted-text">Завершите миссию, чтобы увидеть её в галерее.</p>
       ) : (
         <div className="gallery-grid">
           {achievementsWithMeta.map((item) => (
@@ -59,11 +59,11 @@ const GalleryPage = () => {
               className="gallery-card"
               onClick={() => setSelected(item)}
             >
-              {item.url ? <img src={item.url} alt={item.lesson?.title ?? "Gallery item"} /> : <div />}
+              {item.url ? <img src={item.url} alt={item.lesson?.title ?? "Элемент галереи"} /> : <div />}
               <div className="gallery-card-content">
                 <h3>{item.lesson?.title}</h3>
                 {item.completedAt && (
-                  <p className="muted-text">Completed {new Date(item.completedAt).toLocaleDateString()}</p>
+                  <p className="muted-text">Завершено {new Date(item.completedAt).toLocaleDateString()}</p>
                 )}
               </div>
             </button>
@@ -75,12 +75,12 @@ const GalleryPage = () => {
         <div className="modal" role="dialog" aria-modal="true">
           <div className="modal-content">
             <button type="button" className="modal-close" onClick={() => setSelected(null)}>
-              Close
+              Закрыть
             </button>
             <h2>{lessons.find((lesson) => lesson.id === selected.lessonId)?.title}</h2>
-            {selectedUrl && <img src={selectedUrl} alt="Selected achievement" className="modal-image" />}
+            {selectedUrl && <img src={selectedUrl} alt="Выбранное достижение" className="modal-image" />}
             <div className="modal-checklist">
-              <h3>Checklist Summary</h3>
+              <h3>Итог по чек-листу</h3>
               <ul>
                 {lessons
                   .find((lesson) => lesson.id === selected.lessonId)

@@ -10,15 +10,15 @@ const App = () => {
     <div className="app-shell">
       <header className="app-header">
         <div>
-          <p className="app-title">Photography Foundation</p>
-          <p className="app-subtitle">Leica-inspired, offline-first learning</p>
+          <p className="app-title">Фотография: основы</p>
+          <p className="app-subtitle">Leica-вдохновлённое обучение офлайн</p>
         </div>
         <nav className="app-nav">
           <NavLink to="/" end>
-            Learning Path
+            Учебный путь
           </NavLink>
-          <NavLink to="/practice">Practice Lab</NavLink>
-          <NavLink to="/gallery">Gallery</NavLink>
+          <NavLink to="/practice">Практика</NavLink>
+          <NavLink to="/gallery">Галерея</NavLink>
         </nav>
       </header>
       <main className="app-main">
@@ -30,7 +30,7 @@ const App = () => {
         </Routes>
       </main>
       <footer className="app-footer">
-        <span>Offline-first PWA • All progress stays on your device.</span>
+        <span>PWA офлайн • Весь прогресс хранится на вашем устройстве.</span>
       </footer>
     </div>
   );

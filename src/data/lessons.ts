@@ -3,91 +3,91 @@ import { Lesson } from "./types";
 export const lessons: Lesson[] = [
   {
     id: "light",
-    title: "Lesson 1: The Soul of Photo (Light)",
+    title: "Урок 1: Душа кадра (Свет)",
     concept:
-      "Light is the sculptor. It reveals texture, defines depth, and decides whether a photo feels calm, dramatic, or nostalgic.",
+      "Свет — это скульптор. Он раскрывает фактуру, задаёт глубину и решает, будет ли кадр спокойным, драматичным или ностальгичным.",
     whyItMatters:
-      "Soft light wraps gently around a subject and feels tender. Hard light carves sharp edges and increases tension. Knowing which one you have lets you choose the mood, not just accept it.",
+      "Мягкий свет обволакивает и делает сцену нежной. Жёсткий свет вырезает формы и повышает напряжение. Осознав тип света, вы выбираете настроение, а не подчиняетесь ему.",
     mission:
-      "Spend 20 minutes observing natural light in one room. Photograph the same object in three positions: direct window light, near shadow, and deep shade.",
+      "Потратьте 20 минут на наблюдение естественного света в одной комнате. Снимите один объект в трёх положениях: прямой свет из окна, рядом с тенью и в глубокой тени.",
     checklistItems: [
-      "Captured a version with direct light and visible highlights.",
-      "Captured a version with soft shadow transitions.",
-      "Captured a version in deeper shade with muted contrast.",
-      "Noted the time of day and how it changed the mood."
+      "Есть версия с прямым светом и заметными бликами.",
+      "Есть версия с мягкими переходами тени.",
+      "Есть версия в глубокой тени с приглушённым контрастом.",
+      "Отмечено время суток и его влияние на настроение."
     ],
     examplePrompt:
-      "A quiet ceramic mug on a wooden table, golden hour light spilling across it, deep shadows trailing behind, cinematic softness."
+      "Тихая керамическая кружка на деревянном столе, золотой час, свет стелется по поверхности, глубокие тени, кинематографическая мягкость."
   },
   {
     id: "composition",
-    title: "Lesson 2: Geometry of the Frame (Composition)",
+    title: "Урок 2: Геометрия кадра (Композиция)",
     concept:
-      "Composition is how you place visual weight. The frame is a stage, and every line or shape either supports the story or distracts from it.",
+      "Композиция — это размещение визуального веса. Кадр — сцена, и каждая линия либо поддерживает историю, либо отвлекает от неё.",
     whyItMatters:
-      "Strong geometry makes images feel intentional. When the eye knows where to land and how to travel, the photo feels confident instead of chaotic.",
+      "Сильная геометрия делает снимок намеренным. Когда глазу понятно, куда приземлиться и как двигаться, кадр ощущается уверенно, а не хаотично.",
     mission:
-      "Find a street or hallway with clear lines. Compose two images: one using the rule of thirds, one using leading lines to pull the eye.",
+      "Найдите улицу или коридор с выраженными линиями. Снимите два кадра: один по правилу третей, второй — с ведущими линиями.",
     checklistItems: [
-      "Subject placed on a third with breathing space.",
-      "Used a line or edge to guide the viewer toward the subject.",
-      "Removed one distracting element from the frame.",
-      "Compared the emotional difference between the two shots."
+      "Главный объект стоит на третьей линии и имеет воздух вокруг.",
+      "Есть линия или граница, ведущая взгляд к объекту.",
+      "Из кадра убран хотя бы один отвлекающий элемент.",
+      "Сравнена эмоциональная разница между двумя снимками."
     ],
     examplePrompt:
-      "A long corridor with repeating lights, a lone figure placed on the right third, leading lines pulling toward them, stark monochrome tones."
+      "Длинный коридор с повторяющимися огнями, один человек на правой трети, ведущие линии тянут к нему, контрастный монохром."
   },
   {
     id: "focus",
-    title: "Lesson 3: The Point of Interest (Focus & Subject)",
+    title: "Урок 3: Точка внимания (Фокус и субъект)",
     concept:
-      "A photograph needs a clear subject. Focus is the tool that signals what matters most and what fades into supporting detail.",
+      "Снимку нужен ясный субъект. Фокус — инструмент, который говорит зрителю, что важно, а что лишь поддерживает историю.",
     whyItMatters:
-      "When focus is deliberate, the viewer feels guided. When it is vague, the image feels undecided. Focus is the promise of clarity.",
+      "Когда фокус осознанный, взгляд направлен. Когда он расплывчатый, кадр кажется нерешительным. Фокус — обещание ясности.",
     mission:
-      "Choose one small subject (leaf, cup, or hand). Shoot it three ways: tight detail, mid-range with context, and wide with environment.",
+      "Выберите небольшой объект (лист, чашку или руку). Снимите его тремя способами: крупная деталь, средний план с контекстом и широкий с окружением.",
     checklistItems: [
-      "Subject is tack-sharp in at least one frame.",
-      "Background elements are simplified or softened.",
-      "One image reveals context without stealing attention.",
-      "You can explain why the subject matters in one sentence."
+      "Субъект резкий минимум на одном кадре.",
+      "Фон упрощён или смягчён.",
+      "Один кадр даёт контекст, не забирая внимание.",
+      "Можно объяснить, почему именно этот субъект важен."
     ],
     examplePrompt:
-      "Close-up of a weathered book spine in sharp focus, soft blurred shelves behind it, warm muted tones, intimate atmosphere."
+      "Крупный план потёртого корешка книги в резком фокусе, мягко размытые полки позади, тёплые приглушённые тона, интимная атмосфера."
   },
   {
     id: "perspective",
-    title: "Lesson 4: Perspective & Angle",
+    title: "Урок 4: Перспектива и ракурс",
     concept:
-      "Perspective is the storyteller. A high angle can make a subject feel small or observational, while a low angle can make it heroic or imposing.",
+      "Перспектива — рассказчик. Высокий ракурс делает объект меньше и отстранённее, низкий — героическим или внушительным.",
     whyItMatters:
-      "Angle changes the power dynamic. It also changes the shape of the scene, revealing lines or patterns you cannot see from eye level.",
+      "Ракурс меняет динамику силы. Он также перестраивает формы в кадре и открывает линии, которых не видно с уровня глаз.",
     mission:
-      "Photograph a familiar object from three heights: above, eye level, and ground level. Keep the subject centered in each.",
+      "Снимите привычный объект с трёх высот: сверху, на уровне глаз и у земли. Субъект в центре каждого кадра.",
     checklistItems: [
-      "Shot one angle that feels vulnerable or quiet.",
-      "Shot one angle that feels strong or bold.",
-      "Noticed how background shapes changed with height."
+      "Есть ракурс, создающий ощущение уязвимости или тишины.",
+      "Есть ракурс, создающий ощущение силы или масштаба.",
+      "Отмечено, как изменились формы фона при смене высоты."
     ],
     examplePrompt:
-      "Low-angle photo of a cyclist against open sky, dramatic perspective, strong lines, minimal palette with electric blue accent."
+      "Низкий ракурс велосипедиста на фоне открытого неба, драматическая перспектива, сильные линии, минимальная палитра с электрическим синим акцентом."
   },
   {
     id: "color",
-    title: "Lesson 5: Color & Contrast",
+    title: "Урок 5: Цвет и контраст",
     concept:
-      "Color contrast creates energy. Complementary colors, like blue and orange, push against each other and make a scene pop without extra clutter.",
+      "Контраст цвета создаёт энергию. Дополнительные цвета, например синий и оранжевый, усиливают сцену без лишнего визуального шума.",
     whyItMatters:
-      "Controlled contrast guides attention and sets tone. Subtle contrast feels calm; bold contrast feels alive and cinematic.",
+      "Управляемый контраст направляет внимание и задаёт тон. Мягкий контраст — спокойствие, сильный — динамика и кинематографичность.",
     mission:
-      "Find a complementary color pair in the real world. Photograph it once with balanced exposure and once with deeper shadows for drama.",
+      "Найдите в реальности пару дополнительных цветов. Снимите её один раз с равномерной экспозицией и второй — с более глубокими тенями.",
     checklistItems: [
-      "Captured two dominant complementary colors.",
-      "Adjusted framing to reduce competing colors.",
-      "Created one version with balanced contrast.",
-      "Created one version with deeper shadows."
+      "В кадре доминируют два дополнительных цвета.",
+      "Композиция очищена от лишних цветов.",
+      "Есть версия с ровным контрастом.",
+      "Есть версия с более глубокими тенями."
     ],
     examplePrompt:
-      "A teal door with an orange bicycle leaning against it, strong color contrast, soft overcast light, minimalist urban scene."
+      "Бирюзовая дверь и оранжевый велосипед рядом, сильный цветовой контраст, мягкий рассеянный свет, минималистичная городская сцена."
   }
 ];

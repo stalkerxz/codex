@@ -92,17 +92,17 @@
   letter-spacing: 0.04em;
 }
 
-.status-Not-Started {
+.status-not-started {
   background: #1b1b1b;
   color: var(--muted);
 }
 
-.status-In-Progress {
+.status-in-progress {
   background: #1f2230;
   color: #b9c7ff;
 }
 
-.status-Mastered {
+.status-mastered {
   background: #082036;
   color: #7fc3ff;
 }

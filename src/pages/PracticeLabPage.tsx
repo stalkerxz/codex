@@ -12,23 +12,23 @@ const PracticeLabPage = () => {
   const [exposure, setExposure] = useState(0);
 
   const exposureLabel = useMemo(() => {
-    if (exposure < -0.3) return "Underexposed";
-    if (exposure > 0.3) return "Overexposed";
-    return "Proper";
+    if (exposure < -0.3) return "Недоэкспонировано";
+    if (exposure > 0.3) return "Переэкспонировано";
+    return "Нормально";
   }, [exposure]);
 
   return (
     <section className="page">
       <div className="page-header">
-        <h1>Practice Lab</h1>
-        <p>Visual tools to rehearse composition and exposure without a camera.</p>
+        <h1>Практика</h1>
+        <p>Визуальные инструменты, чтобы отработать композицию и экспозицию без камеры.</p>
       </div>
       <div className="practice-grid">
         <div className="practice-card">
-          <h2>Virtual Viewfinder</h2>
-          <p>Choose an aspect ratio, enable the rule-of-thirds grid, and plan your framing.</p>
+          <h2>Виртуальный видоискатель</h2>
+          <p>Выберите соотношение сторон, включите сетку третей и продумайте кадр заранее.</p>
           <div className="viewfinder-controls">
-            <div className="segmented-control" role="group" aria-label="Aspect ratio selection">
+            <div className="segmented-control" role="group" aria-label="Выбор соотношения сторон">
               {aspectRatios.map((option) => (
                 <button
                   key={option.label}
@@ -42,7 +42,7 @@ const PracticeLabPage = () => {
             </div>
             <label className="toggle">
               <input type="checkbox" checked={showGrid} onChange={() => setShowGrid((prev) => !prev)} />
-              <span>Rule-of-thirds grid</span>
+              <span>Сетка третей</span>
             </label>
           </div>
           <div className="viewfinder" style={{ aspectRatio: ratio.value }}>
@@ -59,8 +59,8 @@ const PracticeLabPage = () => {
         </div>
 
         <div className="practice-card">
-          <h2>Light Meter Simulator</h2>
-          <p>Slide through exposure levels to see how brightness and contrast shape mood.</p>
+          <h2>Симулятор светомера</h2>
+          <p>Перемещайте ползунок, чтобы увидеть, как экспозиция влияет на настроение и детали.</p>
           <div className="light-meter">
             <div
               className="light-meter-preview"
@@ -68,7 +68,7 @@ const PracticeLabPage = () => {
                 filter: `brightness(${1 + exposure}) contrast(${1 + exposure * 0.4})`
               }}
             >
-              <div className="light-meter-text">Scene preview</div>
+              <div className="light-meter-text">Превью сцены</div>
             </div>
             <div className="light-meter-controls">
               <input
@@ -78,16 +78,16 @@ const PracticeLabPage = () => {
                 step={0.05}
                 value={exposure}
                 onChange={(event) => setExposure(Number(event.target.value))}
-                aria-label="Exposure slider"
+                aria-label="Ползунок экспозиции"
               />
               <div className="light-meter-labels">
-                <span>Underexposed</span>
+                <span>Недоэкспонировано</span>
                 <strong>{exposureLabel}</strong>
-                <span>Overexposed</span>
+                <span>Переэкспонировано</span>
               </div>
               <p className="muted-text">
-                The slider shows how exposure changes texture visibility: darker tones hide detail, balanced tones feel
-                natural, and bright tones flatten contrast.
+                Ползунок показывает, как экспозиция меняет фактуру: тёмные тона прячут детали, сбалансированные выглядят
+                естественно, а светлые сглаживают контраст.
               </p>
             </div>
           </div>

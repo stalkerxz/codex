@@ -1,6 +1,6 @@
 {
-  "name": "Photography Foundation",
-  "short_name": "Photo Foundation",
+  "name": "Фотография: основы",
+  "short_name": "Фото-основы",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
