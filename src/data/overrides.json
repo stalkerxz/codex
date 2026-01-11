@@ -1,0 +1,14 @@
+{
+  "features": [
+    {
+      "id": "manual-piste-1",
+      "name": "Manual Cutline",
+      "type": "piste",
+      "coordinates": [
+        [52.952, 87.952],
+        [52.947, 87.95],
+        [52.942, 87.949]
+      ]
+    }
+  ]
+}
