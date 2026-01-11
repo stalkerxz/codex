@@ -1,0 +1,68 @@
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 16px;
+  width: 360px;
+  color: #f5f7fb;
+  pointer-events: none;
+}
+
+.hud__panel {
+  background: rgba(10, 16, 24, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 16px 18px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+}
+
+.hud__panel h1 {
+  font-size: 18px;
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+.hud__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 8px;
+  gap: 16px;
+}
+
+.hud__divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 12px 0;
+}
+
+.hud__warning {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  background: rgba(220, 76, 76, 0.2);
+  border: 1px solid rgba(220, 76, 76, 0.4);
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.hud__row select,
+.hud__row button {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f7fb;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 13px;
+}
+
+.hud__hint {
+  font-size: 12px;
+  opacity: 0.75;
+  align-items: flex-start;
+  line-height: 1.3;
+}

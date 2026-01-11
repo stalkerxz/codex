@@ -1,0 +1,10 @@
+{
+  "bbox": {
+    "minLat": 52.91,
+    "minLon": 87.88,
+    "maxLat": 52.96,
+    "maxLon": 88.02
+  },
+  "resolution": 192,
+  "demSource": "srtm30m"
+}

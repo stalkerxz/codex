@@ -1,0 +1,13 @@
+.app {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.stats {
+  position: absolute !important;
+  top: auto !important;
+  bottom: 8px;
+  left: 8px;
+}

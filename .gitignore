@@ -1,0 +1,19 @@
+node_modules/
+dist/
+public/data_generated/
+
+# Binary assets
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.glb
+*.gltf
+*.bin
+*.raw
+*.tif
+*.tiff
+*.mp4
+*.wav
+*.mp3
+*.zip
