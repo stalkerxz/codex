@@ -1,0 +1,18 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY ../../package.json ../../pnpm-workspace.yaml ./
+COPY ../../packages ./packages
+COPY ./package.json ./apps/web/package.json
+
+RUN corepack enable && pnpm install
+
+COPY ./ ./apps/web
+WORKDIR /app/apps/web
+
+RUN pnpm build
+
+EXPOSE 3000
+
+CMD ["pnpm", "start"]

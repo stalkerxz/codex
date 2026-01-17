@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+enum SocialAccountStatus {
+  ACTIVE
+  DISABLED
+  ERROR
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  FAILED
+  CANCELED
+}
+
+enum PublishStatus {
+  PENDING
+  SCHEDULED
+  PUBLISHED
+  FAILED
+  CANCELED
+}
+
+enum AttemptStatus {
+  STARTED
+  SUCCESS
+  FAILED
+}
+
+enum Platform {
+  telegram
+  vk
+  instagram
+}
+
+model User {
+  id           String            @id @default(uuid())
+  email        String            @unique
+  passwordHash String
+  createdAt    DateTime          @default(now())
+  workspaces   Workspace[]       @relation("WorkspaceOwner")
+  memberships  WorkspaceMember[]
+  posts        Post[]
+  auditLogs    AuditLog[]
+}
+
+model Workspace {
+  id          String            @id @default(uuid())
+  name        String
+  ownerId     String
+  createdAt   DateTime          @default(now())
+  owner       User              @relation("WorkspaceOwner", fields: [ownerId], references: [id])
+  members     WorkspaceMember[]
+  socialAccounts SocialAccount[]
+  mediaAssets MediaAsset[]
+  posts       Post[]
+  auditLogs   AuditLog[]
+}
+
+model WorkspaceMember {
+  id          String        @id @default(uuid())
+  workspaceId String
+  userId      String
+  role        WorkspaceRole
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+
+  @@unique([workspaceId, userId])
+}
+
+model SocialAccount {
+  id                    String               @id @default(uuid())
+  workspaceId           String
+  platform              Platform
+  displayName           String
+  externalId            String
+  credentialsEncrypted  String
+  capabilitiesJson      Json
+  status                SocialAccountStatus  @default(ACTIVE)
+  createdAt             DateTime             @default(now())
+  workspace             Workspace            @relation(fields: [workspaceId], references: [id])
+  postTargets           PostTarget[]
+}
+
+model MediaAsset {
+  id          String   @id @default(uuid())
+  workspaceId String
+  type        String
+  url         String
+  metaJson    Json
+  createdBy   String
+  createdAt   DateTime @default(now())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  creator     User      @relation(fields: [createdBy], references: [id])
+}
+
+model Post {
+  id          String      @id @default(uuid())
+  workspaceId String
+  title       String
+  baseText    String
+  createdBy   String
+  updatedAt   DateTime    @updatedAt
+  createdAt   DateTime    @default(now())
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id])
+  creator     User        @relation(fields: [createdBy], references: [id])
+  targets     PostTarget[]
+}
+
+model PostTarget {
+  id              String        @id @default(uuid())
+  postId          String
+  socialAccountId String
+  overrideText    String?
+  payloadJson     Json
+  status          PublishStatus @default(PENDING)
+  scheduledAt     DateTime?
+  publishedAt     DateTime?
+  externalPostId  String?
+  lastError       String?
+  createdAt       DateTime      @default(now())
+  post            Post          @relation(fields: [postId], references: [id])
+  socialAccount   SocialAccount @relation(fields: [socialAccountId], references: [id])
+  attempts        PublishAttempt[]
+
+  @@unique([postId, socialAccountId])
+}
+
+model PublishAttempt {
+  id           String       @id @default(uuid())
+  postTargetId String
+  attemptNo    Int
+  startedAt    DateTime     @default(now())
+  finishedAt   DateTime?
+  status       AttemptStatus
+  error        String?
+  postTarget   PostTarget   @relation(fields: [postTargetId], references: [id])
+}
+
+model AuditLog {
+  id          String    @id @default(uuid())
+  workspaceId String
+  actorId     String
+  action      String
+  entity      String
+  entityId    String
+  metaJson    Json
+  createdAt   DateTime  @default(now())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  actor       User      @relation(fields: [actorId], references: [id])
+}
