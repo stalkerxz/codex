@@ -478,6 +478,26 @@ app.get("/calendar", { preHandler: [app.authenticate] }, async (request, reply) 
   return targets;
 });
 
+app.get("/audit-logs", { preHandler: [app.authenticate] }, async (request, reply) => {
+  const query = z
+    .object({
+      workspaceId: z.string().uuid(),
+      limit: z.coerce.number().min(1).max(200).default(50)
+    })
+    .parse(request.query);
+  try {
+    await requireMembership(query.workspaceId, request.user.sub);
+  } catch {
+    return reply.code(403).send({ error: "Forbidden" });
+  }
+  const logs = await prisma.auditLog.findMany({
+    where: { workspaceId: query.workspaceId },
+    orderBy: { createdAt: "desc" },
+    take: query.limit
+  });
+  return logs;
+});
+
 app.post("/media", { preHandler: [app.authenticate] }, async (request, reply) => {
   const body = z
     .object({
