@@ -60,8 +60,15 @@ const requireMembership = async (workspaceId: string, userId: string) => {
   return membership;
 };
 
-const ensureRole = (role: string) => {
+const ensureAdmin = (role: string) => {
   if (role === "OWNER" || role === "ADMIN") {
+    return;
+  }
+  throw new Error("FORBIDDEN");
+};
+
+const ensureEditor = (role: string) => {
+  if (role === "OWNER" || role === "ADMIN" || role === "EDITOR") {
     return;
   }
   throw new Error("FORBIDDEN");
@@ -157,7 +164,7 @@ app.post("/workspaces/:id/members", { preHandler: [app.authenticate] }, async (r
   const userId = request.user.sub;
   try {
     const membership = await requireMembership(params.id, userId);
-    ensureRole(membership.role);
+    ensureAdmin(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
@@ -177,7 +184,7 @@ app.patch("/workspaces/:id", { preHandler: [app.authenticate] }, async (request,
   const userId = request.user.sub;
   try {
     const membership = await requireMembership(params.id, userId);
-    ensureRole(membership.role);
+    ensureAdmin(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
@@ -190,7 +197,8 @@ app.post("/social-accounts", { preHandler: [app.authenticate] }, async (request,
   const userId = request.user.sub;
   const workspaceId = z.object({ workspaceId: z.string().uuid() }).parse(request.query).workspaceId;
   try {
-    await requireMembership(workspaceId, userId);
+    const membership = await requireMembership(workspaceId, userId);
+    ensureAdmin(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
@@ -229,7 +237,8 @@ app.post("/social-accounts/:id/validate", { preHandler: [app.authenticate] }, as
     return reply.code(404).send({ error: "Not found" });
   }
   try {
-    await requireMembership(account.workspaceId, request.user.sub);
+    const membership = await requireMembership(account.workspaceId, request.user.sub);
+    ensureAdmin(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
@@ -250,7 +259,8 @@ app.delete("/social-accounts/:id", { preHandler: [app.authenticate] }, async (re
     return reply.code(404).send({ error: "Not found" });
   }
   try {
-    await requireMembership(account.workspaceId, request.user.sub);
+    const membership = await requireMembership(account.workspaceId, request.user.sub);
+    ensureAdmin(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
@@ -263,7 +273,8 @@ app.post("/posts", { preHandler: [app.authenticate] }, async (request, reply) =>
   const userId = request.user.sub;
   const workspaceId = z.object({ workspaceId: z.string().uuid() }).parse(request.query).workspaceId;
   try {
-    await requireMembership(workspaceId, userId);
+    const membership = await requireMembership(workspaceId, userId);
+    ensureEditor(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
@@ -324,7 +335,8 @@ app.delete("/posts/:id", { preHandler: [app.authenticate] }, async (request, rep
     return reply.code(404).send({ error: "Not found" });
   }
   try {
-    await requireMembership(post.workspaceId, request.user.sub);
+    const membership = await requireMembership(post.workspaceId, request.user.sub);
+    ensureEditor(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
@@ -341,7 +353,8 @@ app.post("/posts/:id/targets", { preHandler: [app.authenticate] }, async (reques
     return reply.code(404).send({ error: "Post not found" });
   }
   try {
-    await requireMembership(post.workspaceId, request.user.sub);
+    const membership = await requireMembership(post.workspaceId, request.user.sub);
+    ensureEditor(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
@@ -365,7 +378,8 @@ app.post("/targets/:id/schedule", { preHandler: [app.authenticate] }, async (req
     return reply.code(404).send({ error: "Not found" });
   }
   try {
-    await requireMembership(existing.post.workspaceId, request.user.sub);
+    const membership = await requireMembership(existing.post.workspaceId, request.user.sub);
+    ensureEditor(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
@@ -395,7 +409,8 @@ app.post("/targets/:id/publish-now", { preHandler: [app.authenticate] }, async (
     return reply.code(404).send({ error: "Not found" });
   }
   try {
-    await requireMembership(existing.post.workspaceId, request.user.sub);
+    const membership = await requireMembership(existing.post.workspaceId, request.user.sub);
+    ensureEditor(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
@@ -419,7 +434,8 @@ app.post("/targets/:id/cancel", { preHandler: [app.authenticate] }, async (reque
     return reply.code(404).send({ error: "Not found" });
   }
   try {
-    await requireMembership(existing.post.workspaceId, request.user.sub);
+    const membership = await requireMembership(existing.post.workspaceId, request.user.sub);
+    ensureEditor(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
@@ -471,7 +487,8 @@ app.post("/media", { preHandler: [app.authenticate] }, async (request, reply) =>
     })
     .parse(request.body);
   try {
-    await requireMembership(body.workspaceId, request.user.sub);
+    const membership = await requireMembership(body.workspaceId, request.user.sub);
+    ensureEditor(membership.role);
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
