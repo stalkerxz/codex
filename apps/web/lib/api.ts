@@ -1,4 +1,5 @@
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+export const SESSION_EVENT = "postflow:session";
 
 export type SessionConfig = {
   token: string;
@@ -21,6 +22,7 @@ export const saveSession = (config: SessionConfig) => {
   }
   window.localStorage.setItem("postflow.token", config.token);
   window.localStorage.setItem("postflow.workspaceId", config.workspaceId);
+  window.dispatchEvent(new Event(SESSION_EVENT));
 };
 
 export const apiFetch = async <T>(path: string, token: string): Promise<T> => {

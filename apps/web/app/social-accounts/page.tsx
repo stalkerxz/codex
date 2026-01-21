@@ -1,8 +1,9 @@
 "use client";
 
 import { platformCapabilityMatrix } from "@postflow/shared";
-import { useEffect, useMemo, useState } from "react";
-import { apiFetch, loadSession } from "../../lib/api";
+import { useEffect, useState } from "react";
+import { apiFetch } from "../../lib/api";
+import { useSession } from "../../lib/session";
 
 type SocialAccount = {
   id: string;
@@ -15,7 +16,7 @@ export default function SocialAccountsPage() {
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { token, workspaceId } = useMemo(() => loadSession(), []);
+  const { token, workspaceId } = useSession();
 
   useEffect(() => {
     if (!token || !workspaceId) {

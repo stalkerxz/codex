@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { apiFetch, loadSession } from "../../lib/api";
+import { useEffect, useState } from "react";
+import { apiFetch } from "../../lib/api";
+import { useSession } from "../../lib/session";
 
 type CalendarItem = {
   id: string;
@@ -16,7 +17,7 @@ export default function DashboardPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { token, workspaceId } = useMemo(() => loadSession(), []);
+  const { token, workspaceId } = useSession();
 
   useEffect(() => {
     if (!token || !workspaceId) {

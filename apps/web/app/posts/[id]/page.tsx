@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { apiFetch, loadSession } from "../../../lib/api";
+import { useEffect, useState } from "react";
+import { apiFetch } from "../../../lib/api";
+import { useSession } from "../../../lib/session";
 
 type PostTargetAttempt = {
   id: string;
@@ -29,7 +30,7 @@ export default function PostDetailsPage({ params }: { params: { id: string } }) 
   const [post, setPost] = useState<Post | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { token } = useMemo(() => loadSession(), []);
+  const { token } = useSession();
 
   useEffect(() => {
     if (!token) {
