@@ -76,6 +76,23 @@ pnpm prisma:migrate
 pnpm -r test
 ```
 
+## Media uploads (MinIO)
+To upload media, request a presigned URL and then upload the file directly to MinIO:
+
+1. Request presign:
+```
+POST /media/presign
+{
+  "workspaceId": "...",
+  "fileName": "banner.png",
+  "contentType": "image/png"
+}
+```
+
+2. Upload file with PUT to `uploadUrl` (returned by the API).
+
+3. Save the returned `publicUrl` in `/media` to register the asset.
+
 ## Checklists
 
 ### Backend + worker

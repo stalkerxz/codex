@@ -10,6 +10,7 @@ import { prisma } from "./prisma";
 import { registerAuth } from "./auth";
 import { encryptJson, decryptJson } from "./crypto";
 import { platformAdapters } from "./platforms";
+import { createPresignedUpload } from "./storage";
 import {
   loginSchema,
   postSchema,
@@ -502,6 +503,26 @@ app.post("/media", { preHandler: [app.authenticate] }, async (request, reply) =>
     }
   });
   return reply.send(asset);
+});
+
+app.post("/media/presign", { preHandler: [app.authenticate] }, async (request, reply) => {
+  const body = z
+    .object({
+      workspaceId: z.string().uuid(),
+      fileName: z.string().min(1),
+      contentType: z.string().min(1)
+    })
+    .parse(request.body);
+  try {
+    const membership = await requireMembership(body.workspaceId, request.user.sub);
+    ensureEditor(membership.role);
+  } catch {
+    return reply.code(403).send({ error: "Forbidden" });
+  }
+  const safeName = body.fileName.replace(/[^a-zA-Z0-9._-]/g, \"_\");
+  const key = `${body.workspaceId}/${Date.now()}_${safeName}`;
+  const presign = await createPresignedUpload(key, body.contentType);
+  return reply.send(presign);
 });
 
 app.setErrorHandler((error, _request, reply) => {
