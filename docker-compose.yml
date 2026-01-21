@@ -39,7 +39,9 @@ services:
       - ./docker/minio/init.sh:/init.sh
 
   api:
-    build: ./apps/api
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
     depends_on:
       - postgres
       - redis
@@ -49,7 +51,9 @@ services:
     command: ["pnpm", "start"]
 
   worker:
-    build: ./apps/worker
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
     depends_on:
       - postgres
       - redis
@@ -57,7 +61,9 @@ services:
     command: ["pnpm", "start"]
 
   web:
-    build: ./apps/web
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
     depends_on:
       - api
     env_file: .env

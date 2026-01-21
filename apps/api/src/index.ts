@@ -5,7 +5,6 @@ import swagger from "fastify-swagger";
 import swaggerUi from "fastify-swagger-ui";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { v4 as uuidv4 } from "uuid";
 import { env } from "./env";
 import { prisma } from "./prisma";
 import { registerAuth } from "./auth";

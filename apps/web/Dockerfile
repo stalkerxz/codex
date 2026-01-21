@@ -2,13 +2,13 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY ../../package.json ../../pnpm-workspace.yaml ./
-COPY ../../packages ./packages
-COPY ./package.json ./apps/web/package.json
+COPY package.json pnpm-workspace.yaml ./
+COPY packages ./packages
+COPY apps/web/package.json ./apps/web/package.json
 
 RUN corepack enable && pnpm install
 
-COPY ./ ./apps/web
+COPY apps/web ./apps/web
 WORKDIR /app/apps/web
 
 RUN pnpm build
