@@ -1,4 +1,47 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { apiFetch, loadSession } from "../../lib/api";
+
+type CalendarItem = {
+  id: string;
+  scheduledAt: string | null;
+  status: string;
+  post: { title: string };
+  socialAccount: { platform: string; displayName: string };
+};
+
 export default function DashboardPage() {
+  const [items, setItems] = useState<CalendarItem[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { token, workspaceId } = useMemo(() => loadSession(), []);
+
+  useEffect(() => {
+    if (!token || !workspaceId) {
+      return;
+    }
+    const fetchCalendar = async () => {
+      setLoading(true);
+      setError("");
+      const from = new Date();
+      const to = new Date();
+      to.setDate(to.getDate() + 30);
+      try {
+        const data = await apiFetch<CalendarItem[]>(
+          `/calendar?workspaceId=${workspaceId}&from=${from.toISOString()}&to=${to.toISOString()}`,
+          token
+        );
+        setItems(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load calendar");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCalendar();
+  }, [token, workspaceId]);
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -14,23 +57,32 @@ export default function DashboardPage() {
         <div className="rounded bg-white p-4 shadow-sm">
           <h2 className="text-sm font-semibold">Filters</h2>
           <div className="mt-3 space-y-2 text-sm text-slate-600">
-            <p>Workspace: Default</p>
-            <p>Status: Scheduled</p>
-            <p>Platform: Telegram, VK</p>
+            <p>Workspace: {workspaceId || "Not set"}</p>
+            <p>Status: {items.length ? "Mixed" : "No data"}</p>
+            <p>Platform: {items.length ? "Multiple" : "Unknown"}</p>
           </div>
         </div>
         <div className="rounded bg-white p-4 shadow-sm md:col-span-2">
           <h2 className="text-sm font-semibold">Month view</h2>
-          <div className="mt-4 grid grid-cols-7 gap-2 text-xs text-slate-500">
-            {Array.from({ length: 28 }).map((_, index) => (
-              <div key={index} className="rounded border border-dashed border-slate-200 p-2">
-                <div className="font-semibold text-slate-700">{index + 1}</div>
-                {index % 6 === 0 && (
-                  <div className="mt-2 rounded bg-emerald-50 px-2 py-1 text-emerald-700">Telegram • 09:00</div>
-                )}
-              </div>
-            ))}
-          </div>
+          {loading && <p className="mt-4 text-sm text-slate-500">Loading calendar…</p>}
+          {error && <p className="mt-4 text-sm text-rose-600">{error}</p>}
+          {!loading && !error && (
+            <div className="mt-4 space-y-3 text-sm text-slate-600">
+              {items.length === 0 && <p>No scheduled posts in the next 30 days.</p>}
+              {items.map((item) => (
+                <div key={item.id} className="rounded border border-slate-200 p-3">
+                  <div className="font-semibold text-slate-900">{item.post.title}</div>
+                  <div className="text-xs text-slate-500">
+                    {item.socialAccount.platform} · {item.socialAccount.displayName}
+                  </div>
+                  <div className="text-xs text-slate-500">
+                    Scheduled: {item.scheduledAt ? new Date(item.scheduledAt).toLocaleString() : "Not set"}
+                  </div>
+                  <div className="mt-1 text-xs text-slate-500">Status: {item.status}</div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

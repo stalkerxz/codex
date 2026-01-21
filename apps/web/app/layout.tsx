@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import SessionBar from "../components/session-bar";
 
 export const metadata: Metadata = {
   title: "PostFlow",
@@ -31,6 +32,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </header>
           <main className="mx-auto max-w-6xl px-6 py-6">{children}</main>
+          <div className="mx-auto max-w-6xl px-6 pb-10">
+            <SessionBar />
+          </div>
         </div>
       </body>
     </html>
