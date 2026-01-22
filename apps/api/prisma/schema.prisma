@@ -114,6 +114,7 @@ model Post {
   workspaceId String
   title       String
   baseText    String
+  status      PostStatus  @default(DRAFT)
   createdBy   String
   updatedAt   DateTime    @updatedAt
   createdAt   DateTime    @default(now())
