@@ -11,7 +11,7 @@ export const registerAuth = (app: FastifyInstance) => {
     try {
       await request.jwtVerify();
     } catch (err) {
-      reply.code(401).send({ error: "Unauthorized" });
+      return reply.code(401).send({ error: "Unauthorized" });
     }
   });
 };
