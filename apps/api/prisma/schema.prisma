@@ -1,0 +1,216 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  student
+  admin
+  author
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+  refunded
+}
+
+enum LessonContentType {
+  text
+  video
+  image
+  checklist
+  attachment
+  simulator
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(student)
+  name         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  enrollments  Enrollment[]
+  submissions  HomeworkSubmission[]
+  attempts     SimulatorAttempt[]
+  payments     Payment[]
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  heroImage   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  modules     Module[]
+  enrollments Enrollment[]
+  products    Product[]
+}
+
+model Module {
+  id        String   @id @default(cuid())
+  title     String
+  order     Int
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  lessons   Lesson[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lesson {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  summary     String
+  order       Int
+  module      Module   @relation(fields: [moduleId], references: [id])
+  moduleId    String
+  content     LessonContentBlock[]
+  quizzes     Quiz[]
+  homeworks   Homework[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model LessonContentBlock {
+  id        String            @id @default(cuid())
+  type      LessonContentType
+  data      Json
+  order     Int
+  lesson    Lesson            @relation(fields: [lessonId], references: [id])
+  lessonId  String
+  createdAt DateTime          @default(now())
+}
+
+model Quiz {
+  id        String    @id @default(cuid())
+  title     String
+  lesson    Lesson    @relation(fields: [lessonId], references: [id])
+  lessonId  String
+  questions QuizQuestion[]
+}
+
+model QuizQuestion {
+  id        String     @id @default(cuid())
+  text      String
+  multiple  Boolean    @default(false)
+  quiz      Quiz       @relation(fields: [quizId], references: [id])
+  quizId    String
+  answers   QuizAnswer[]
+}
+
+model QuizAnswer {
+  id         String       @id @default(cuid())
+  text       String
+  correct    Boolean      @default(false)
+  question   QuizQuestion @relation(fields: [questionId], references: [id])
+  questionId String
+}
+
+model Homework {
+  id          String   @id @default(cuid())
+  title       String
+  prompt      String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id])
+  lessonId    String
+  submissions HomeworkSubmission[]
+}
+
+model HomeworkSubmission {
+  id         String   @id @default(cuid())
+  files      String[]
+  comment    String?
+  status     String   @default("pending")
+  grade      Int?
+  feedback   String?
+  homework   Homework @relation(fields: [homeworkId], references: [id])
+  homeworkId String
+  student    User     @relation(fields: [studentId], references: [id])
+  studentId  String
+  createdAt  DateTime @default(now())
+}
+
+model SimulatorScene {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  description String
+  baseImage   String
+  lightKelvin Int
+  lightTint   Int
+  movement    Int
+  distanceM   Float
+  focalMM     Int
+  difficulty  Int
+  tasks       SimulatorTask[]
+}
+
+model SimulatorTask {
+  id          String   @id @default(cuid())
+  title       String
+  goal        String
+  targetEV    Float
+  maxBlur     Float
+  maxNoise    Float
+  minDOF      Float
+  scene       SimulatorScene @relation(fields: [sceneId], references: [id])
+  sceneId     String
+  attempts    SimulatorAttempt[]
+}
+
+model SimulatorAttempt {
+  id         String   @id @default(cuid())
+  settings   Json
+  score      Int
+  feedback   String
+  task       SimulatorTask @relation(fields: [taskId], references: [id])
+  taskId     String
+  student    User     @relation(fields: [studentId], references: [id])
+  studentId  String
+  createdAt  DateTime @default(now())
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  priceCents  Int
+  currency    String
+  interval    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  courseId    String
+  payments    Payment[]
+}
+
+model Payment {
+  id           String        @id @default(cuid())
+  provider     String
+  providerRef  String
+  status       PaymentStatus @default(pending)
+  amountCents  Int
+  currency     String
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String
+  product      Product       @relation(fields: [productId], references: [id])
+  productId    String
+  createdAt    DateTime @default(now())
+}
+
+model Enrollment {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+}
