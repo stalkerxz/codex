@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  @apply bg-neutral-950 text-neutral-100 font-sans;
+}
+
+.light body {
+  @apply bg-white text-neutral-900;
+}
+
+.container-base {
+  @apply max-w-6xl mx-auto px-6;
+}
