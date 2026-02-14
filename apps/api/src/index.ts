@@ -539,7 +539,7 @@ app.post("/media/presign", { preHandler: [app.authenticate] }, async (request, r
   } catch {
     return reply.code(403).send({ error: "Forbidden" });
   }
-  const safeName = body.fileName.replace(/[^a-zA-Z0-9._-]/g, \"_\");
+  const safeName = body.fileName.replace(/[^a-zA-Z0-9._-]/g, "_");
   const key = `${body.workspaceId}/${Date.now()}_${safeName}`;
   const presign = await createPresignedUpload(key, body.contentType);
   return reply.send(presign);
