@@ -1,0 +1,76 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postflow
+      POSTGRES_PASSWORD: postflow
+      POSTGRES_DB: postflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  minio:
+    image: minio/minio:RELEASE.2024-07-16T23-46-41Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: postflow
+      MINIO_ROOT_PASSWORD: postflowsecret
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+
+  minio-init:
+    image: minio/mc:RELEASE.2024-07-16T18-48-54Z
+    depends_on:
+      - minio
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["/init.sh"]
+    volumes:
+      - ./docker/minio/init.sh:/init.sh
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    depends_on:
+      - postgres
+      - redis
+    env_file: .env
+    ports:
+      - "4000:4000"
+    command: ["pnpm", "start"]
+
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    depends_on:
+      - postgres
+      - redis
+    env_file: .env
+    command: ["pnpm", "start"]
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    depends_on:
+      - api
+    env_file: .env
+    ports:
+      - "3000:3000"
+    command: ["pnpm", "start"]
+
+volumes:
+  postgres-data:
+  minio-data:
